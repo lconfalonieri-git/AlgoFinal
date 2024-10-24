@@ -1,2 +1,10 @@
-This is the first test of making a git branch, adding changes (this file)
-and then pushing to master
+Welcome to the Git Repository for our final project!
+
+This program will simulate a game in which players can either win or lose.
+When the game ends, each player's statistics will be updated on a leaderboard.
+The leaderboard will be actively changing based on whose win record is best.
+
+To run the program, download the main.cpp file
+Once you have the file, ensure you have MinGW installed on your machine
+From the terminal, navigate to the folder in which the file is kept and run it using g++.
+Observe the leaderboard update as you instruct it to simulate more games.
