@@ -3,6 +3,8 @@
 #include <vector>
 using namespace std;
 
+// Testing git and shi -cam
+
 // Adds a player to the leaderboard with an initial 0-0 record
 void addPlayer(string name){
 
