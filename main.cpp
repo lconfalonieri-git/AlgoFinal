@@ -1,6 +1,9 @@
+#include <stdlib.h>
 #include <iostream>
 #include <string>
 #include <vector>
+#include <chrono>
+#include <thread>
 using namespace std;
 
 struct playerList {
@@ -121,10 +124,21 @@ void sortPlayersByScore(playerList** headRef) {
 
 // Displays the leaderboard
 void printList(playerList* head) {
+    int totalLength = 10;
+
     while (head != nullptr) {
-        cout << "Name: " << head->name << ", Score: " << head->score << endl;
+        string name = head->name;
+
+        int leftSpace = (totalLength - name.length())/2;
+        int rightSpace = totalLength - leftSpace - name.length();
+
+        string space1(leftSpace, ' ');
+        string space2(rightSpace, ' ');
+
+        cout << "|" << space1 << head->name << space2 << "|   " << head->score << "   |" << endl;
         head = head->next;
     }
+    cout << "|__________|_______|\n";
 }
 
 
@@ -134,41 +148,58 @@ int main() {
     string choice;
 
     srand(time(nullptr)); // Seed the random number generator
-
+    int playerCounter = 0;
     while (true) {
+        system("cls");
+        cout << "     Leaderboard" << endl;
+        cout << " __________________ \n";
+        cout << "|   Name   | Score |\n";
+        sortPlayersByScore(&head);
+        printList(head);
+
+        for(int i = 10; i > playerCounter; i--){
+            cout << "\n";
+        }
+
         cout << "Options:\n";
         cout << "1. Add a player\n";
         cout << "2. Simulate a game\n";
-        cout << "3. Show the scoreboard\n";
-        cout << "4. Exit\n";
+        cout << "3. Exit\n";
         cout << "Enter your choice: ";
         cin >> choice;
 
         if (choice == "1") {
             // Add a player
-            string playerName;
-            cout << "Enter player's name: ";
-            cin >> playerName;
-            addPlayer(head, playerName);
-            cout << "Player " << playerName << " added.\n";
+            if (playerCounter == 10){
+                cout << "Max players met.\n";
+            } else{
+                playerCounter++;
+                string playerName;
+                cout << "Enter player's name: ";
+                cin >> playerName;
+                if (playerName.length() >= 10){
+                    cout << "Name too long\n";
+                } else{
+                    addPlayer(head, playerName);
+                    cout << "Player " << playerName << " added.\n";
+                }
+            }
 
         } else if (choice == "2") {
             // Simulate a game
-            string player1, player2;
-            cout << "Enter the first player's name: ";
-            cin >> player1;
-            cout << "Enter the second player's name: ";
-            cin >> player2;
+            if(playerCounter <=1){
+                cout << "Not enough players.\n";
+            } else{
+                string player1, player2;
+                cout << "Enter the first player's name: ";
+                cin >> player1;
+                cout << "Enter the second player's name: ";
+                cin >> player2;
 
-            playGame(head, player1, player2);
+                playGame(head, player1, player2);
+            }
 
         } else if (choice == "3") {
-            // Show the scoreboard
-            sortPlayersByScore(&head);
-            cout << "Scoreboard:\n";
-            printList(head);
-
-        } else if (choice == "4") {
             // Exit
             cout << "Exiting program.\n";
             break;
@@ -176,6 +207,8 @@ int main() {
         } else {
             cout << "Invalid choice, please try again.\n";
         }
+        std::this_thread::sleep_for(chrono::seconds(1));
+
     }
 
     return 0;
