@@ -6,5 +6,6 @@ The leaderboard will be actively changing based on whose win record is best.
 
 To run the program, download the main.cpp file
 Once you have the file, ensure you have MinGW installed on your machine
-From the terminal, navigate to the folder in which the file is kept and run it using g++.
-Observe the leaderboard update as you instruct it to simulate more games.
+Navigate to the cpp file in file explorer and type "cmd" into the top bar.
+In the terminal, run the command "g++ main.cpp -o main" to make an executable.
+Next, enter the command ".\main" to run the program.
