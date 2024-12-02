@@ -4,7 +4,7 @@ This program will simulate a game in which players can either win or lose.
 When the game ends, each player's statistics will be updated on a leaderboard.
 The leaderboard will be actively changing based on whose win record is best.
 
-To run the program, download the Original.cpp or the ELO.cpp file
+To run the program, download the ELO.cpp file
 Once you have the file, ensure you have MinGW installed on your machine
 Navigate to the cpp file in file explorer and type "cmd" into the top bar.
 In the terminal, run the command "g++ main.cpp -o main" to make an executable.
