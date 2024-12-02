@@ -58,7 +58,6 @@ void playGame(playerList* head, const string& player1, const string& player2) {
 
     // Randomly determine the winner
     bool player1Wins = rand() % 2;
-    cout << (player1Wins ? player1 : player2) << " wins against " << (player1Wins ? player2 : player1) << "!\n";
 
     updateElo(p1, p2, player1Wins);
 }
@@ -114,8 +113,8 @@ void sortPlayersByScore(playerList** headRef) {
 
 // Displays the leaderboard 
 void printList(playerList* head) {
-    cout << " __________________ \n";
-    cout << "|   Name   | Score |\n";
+    cout << " ___________________ \n";
+    cout << "|   Name   | Score  |\n";
 
     while (head) {
         string name = head->name;
@@ -136,46 +135,87 @@ void printList(playerList* head) {
 
         head = head->next;
     }
-    cout << "|__________|_______|\n";
+    cout << "|__________|________|\n";
 }
 int main() {
     playerList* head = nullptr;
+    string choice;
+    int playerCounter = 0;
 
     srand(time(nullptr)); // Seed RNG
+    while (true) {
+        system("cls");
+        // Sort and display leaderboard
+        sortPlayersByScore(&head);
+        printList(head);
 
-    // Automatically add 25 players
-    for (int i = 1; i <= 25; i++) {
-        addPlayer(head, "Player" + to_string(i));
+        for(int i = 20; i > playerCounter; i--){
+            cout << "\n";
+        }
+
+        cout << "Options:\n";
+        cout << "1. Add Players\n";
+        cout << "2. Simulate Games\n";
+        cout << "3. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        if (choice == "1") {
+            // Add a player
+            int players = 0;
+            cout << "Enter the amount of players: ";
+            cin >> players;
+            if (playerCounter + players >= 21){
+                cout << "Max players met.\n";
+            } else{
+                for (int i = playerCounter + 1; i <= playerCounter + players; i++) {
+                    addPlayer(head, "Player" + to_string(i));
+                }
+                playerCounter = playerCounter + players;
+            }
+
+        } else if (choice == "2") {
+            // Simulate games
+            if (playerCounter <= 2){
+                cout << "Not enough players.\n";
+            } else{
+                int games;
+                cout << "Enter the amount of games to simulate: ";
+                cin >> games;
+
+                for (int i = 0; i < games; i++) {
+                    playerList* p1 = head;
+                    playerList* p2 = head;
+
+                    // Select two random players
+                    int p1Index = rand() % playerCounter;
+                    int p2Index = rand() % playerCounter;
+
+                    while (p1Index == p2Index) {
+                        p2Index = rand() % playerCounter;
+                    }
+
+                    for (int j = 0; j < p1Index; j++) {
+                        p1 = p1->next;
+                    }
+
+                    for (int j = 0; j < p2Index; j++) {
+                        p2 = p2->next;
+                    }
+
+                    playGame(head, p1->name, p2->name);
+                }
+            }
+
+        } else if (choice == "3") {
+            // Exit
+            cout << "Exiting program.\n";
+            break;
+
+        } else {
+            cout << "Invalid choice, please try again.\n";
+        }
+    std::this_thread::sleep_for(chrono::seconds(1));
     }
-
-    // Simulate 200 matches
-    for (int i = 0; i < 200; i++) {
-        playerList* p1 = head;
-        playerList* p2 = head;
-
-        // Select two random players
-        int p1Index = rand() % 25;
-        int p2Index = rand() % 25;
-
-        while (p1Index == p2Index) {
-            p2Index = rand() % 25;
-        }
-
-        for (int j = 0; j < p1Index; j++) {
-            p1 = p1->next;
-        }
-
-        for (int j = 0; j < p2Index; j++) {
-            p2 = p2->next;
-        }
-
-        playGame(head, p1->name, p2->name);
-    }
-
-    // Sort and display leaderboard
-    sortPlayersByScore(&head);
-    cout << "Final Leaderboard:\n";
-    printList(head);
-
     return 0;
 }
